@@ -3,12 +3,12 @@
 
 class Investimento {
 
-        private $nome;
-        private $tipo;
-        private $valor;
-        private $data;
+        private string $nome;
+        private string $tipo;
+        private float $valor;
+        private DateTime $data;
 
-        public function __construct($nome, $tipo, $valor, $data){
+        public function __construct(string $nome, string $tipo, float $valor, DateTime $data){
                 $this->nome = $nome;
                 $this->tipo = $tipo;
                 $this->valor = $valor;
@@ -16,13 +16,14 @@ class Investimento {
 
         }
 
+        // Função só para testar o servidor
         public function get_dados(){
                 
                 return [
                         'nome' => $this->nome,
                         'tipo' => $this->tipo,
                         'valor' => $this->valor,
-                        'data' => $this->data,
+                        'data_investimento' => $this->data->format('Y-m-d'),
                 ];
         }
 }
