@@ -12,6 +12,8 @@ $db = new Connection();
 
 // Testando o controller
 require_once __DIR__ . '/../src/controllers/investimento_controller.php';
+require_once __DIR__ . '/../src/services/investimento_service.php';
+require_once __DIR__ . '/../src/repository/investimento_repository.php';
 
 spl_autoload_register(function ($class) {
     $path = __DIR__ . '/../src/classes/' . strtolower($class) . '.php';
@@ -20,19 +22,18 @@ spl_autoload_register(function ($class) {
     }
 });
 
-$data_investimento = new DateTime('2025-06-14');
+// Criar investimento:
+$repository = new InvestimentoRepository($db);
+$service = new InvestimentoService($repository);
+$controller = new InvestimentoController($service);
 
-$investimento_1 = new Investimento(null, 'Bovespa', 'Acao', 100, $data_investimento);
+$investimento1 = [
+    'nome' => 'caixa',
+    'tipo' => 'Acao',
+    'valor' => 100,
+    'data' => '2025-06-14',
+];
 
-$controller = new Investimento_controller($db);
 
-$response = $controller->inserir_investimento($investimento_1);
-
-$investimento_2 = new Investimento(13, 'Bovespa 2', 'Titulo', 200.60, $data_investimento,);
-$response = $controller->update_investimento( $investimento_2 );
-
-$response = $controller->listar_todos();
-
-$response = $controller->delete_investimento($investimento_2);
-
+$response = $controller->criar_investimento($investimento1);
 echo json_encode($response);
