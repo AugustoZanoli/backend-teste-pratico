@@ -22,13 +22,17 @@ spl_autoload_register(function ($class) {
 
 $data_investimento = new DateTime('2025-06-14');
 
-$investimento_1 = new Investimento('Ita[u', 'Titulo', 200.60, $data_investimento );
+$investimento_1 = new Investimento(null, 'Bovespa', 'Acao', 100, $data_investimento);
 
-$controller = new Investimento_controller( $db );
+$controller = new Investimento_controller($db);
 
-$investimento_2 = new Investimento('Itaú','Titulo',200.60, $data_investimento );
+$response = $controller->inserir_investimento($investimento_1);
+
+$investimento_2 = new Investimento(13, 'Bovespa 2', 'Titulo', 200.60, $data_investimento,);
 $response = $controller->update_investimento( $investimento_2 );
 
+$response = $controller->listar_todos();
+
+$response = $controller->delete_investimento($investimento_2);
 
 echo json_encode($response);
-

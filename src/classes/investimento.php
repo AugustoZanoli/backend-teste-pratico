@@ -8,13 +8,16 @@ class Investimento
         private string $tipo;
         private float $valor;
         private DateTime $data;
+        private ?int $id;
 
-        public function __construct(string $nome, string $tipo, float $valor, DateTime $data)
+        public function __construct(?int $id, string $nome, string $tipo, float $valor, DateTime $data)
         {
+                $this->id = $id;
                 $this->nome = $nome;
                 $this->tipo = $tipo;
                 $this->valor = $valor;
                 $this->data = $data;
+
 
                 $this->validar();
         }
@@ -35,7 +38,20 @@ class Investimento
                 }
         }
 
+        public function to_array()
+        {
+                return [
+                        'id' => $this->get_id(),
+                        'nome' => $this->get_nome(),
+                        'tipo' => $this->get_tipo(),
+                        'valor' => $this->get_valor(),
+                        'data' => $this->get_data()->format('Y-m-d'),
+                ];
+        }
 
+
+
+        // getters
         public function get_nome()
         {
                 return $this->nome;
@@ -51,5 +67,31 @@ class Investimento
         public function get_data()
         {
                 return $this->data;
+        }
+        public function get_id(): ?int
+        {
+                return $this->id;
+        }
+
+        // setters
+        public function set_id($id)
+        {
+                $this->id = $id;
+        }
+        public function set_nome($nome)
+        {
+                $this->nome = $nome;
+        }
+        public function set_tipo($tipo)
+        {
+                $this->tipo = $tipo;
+        }
+        public function set_valor($valor)
+        {
+                $this->valor = $valor;
+        }
+        public function set_data($data)
+        {
+                $this->data = $data;
         }
 }
