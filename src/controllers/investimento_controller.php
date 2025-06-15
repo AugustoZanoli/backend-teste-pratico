@@ -1,124 +1,62 @@
 <?php
 
-class Investimento_controller
+class InvestimentoController
 {
-        private $conn;
+        private $service;
 
-        public function __construct(Connection $db)
+        public function __construct(InvestimentoService $service)
         {
-                $this->conn = $db->connect();
+                $this->service = $service;
         }
 
-        // Função para inserir investimento no banco
-        public function inserir_investimento(Investimento $investimento)
+        public function criar_investimento(array $dados)
         {
                 try {
-
-                        $sql = "INSERT INTO investimento (nome, tipo, valor, data) VALUES (:nome, :tipo, :valor, :data)";
-                        $stmt = $this->conn->prepare($sql);
-
-                        $stmt->bindValue(':nome', $investimento->get_nome());
-                        $stmt->bindValue(':tipo', $investimento->get_tipo());
-                        $stmt->bindValue(':valor', $investimento->get_valor());
-                        $stmt->bindValue(':data', $investimento->get_data()->format('Y-m-d'));
-
-                        $stmt->execute();
-
-                        $investimento->set_id($this->conn->lastInsertId());
-
+                        $investimento = new Investimento(
+                                null,
+                                $dados['nome'],
+                                $dados['tipo'],
+                                $dados['valor'],
+                                new DateTime($dados['data'])
+                        );
+                        return $this->service->criarInvestimento($investimento);
+                } catch (Exception $e) {
                         return [
-                                "status" => 201,
-                                "mensagem" => "Investimento cadastrado com sucesso!"
-                        ];
-                } catch (PDOException $e) {
-                        return [
-                                "status" => 500,
-                                "erro" => "Erro ao cadastrar o investimento: " . $e->getMessage()
+                                "status" => 400,
+                                "erro" => "Dados inválidos: " . $e->getMessage()
                         ];
                 }
         }
 
-        // Função para atualizar investimento no banco
-        public function update_investimento(Investimento $investimento)
+        public function atualizar_investimento(array $dados)
         {
                 try {
-                        $sql = "UPDATE investimento SET nome = :nome, tipo = :tipo, valor = :valor, data = :data WHERE id = :id";
-                        $stmt = $this->conn->prepare($sql);
-                        $stmt->bindValue(':nome', $investimento->get_nome());
-                        $stmt->bindValue(':tipo', $investimento->get_tipo());
-                        $stmt->bindValue(':valor', $investimento->get_valor());
-                        $stmt->bindValue(':data', $investimento->get_data()->format('Y-m-d'));
-                        $stmt->bindValue(':id', $investimento->get_id());
-
-                        $stmt->execute();
-
-                        return [
-                                "status" => 201,
-                                "mensagem" => "Investimento atualizado com sucesso!"
-                        ];
-                } catch (PDOException $e) {
-                        return [
-                                "status" => 500,
-                                "erro" => "Erro ao atualizar o investimento: " . $e->getMessage()
-                        ];
-                }
-        }
-
-        // Função para deletar investimento no banco
-        public function delete_investimento(Investimento $investimento)
-        {
-                try {
-                        $sql = "DELETE FROM investimento WHERE id = :id";
-                        $stmt = $this->conn->prepare($sql);
-                        $stmt->bindValue(':id', $investimento->get_id());
-
-                        $stmt->execute();
-
-                        return [
-                                "status" => 201,
-                                "mensagem" => "Investimento removido com sucesso!"
-                        ];
-                } catch (PDOException $e) {
-                        return [
-                                "status" => 500,
-                                "erro" => "Erro ao remover o investimento: " . $e->getMessage()
-                        ];
-                }
-        }
-
-        // Função para listar todos os investimentos no banco
-        public function listar_todos()
-        {
-                try {
-                        $sql = "SELECT * FROM investimento";
-                        $stmt = $this->conn->prepare($sql);
-                        $stmt->execute();
-                        $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                        $investimentos = [];
-
-                        foreach ($resultados as $row) {
-                                $investimento = new Investimento(
-                                        (int)$row['id'],
-                                        $row['nome'],
-                                        $row['tipo'],
-                                        (float)$row['valor'],
-                                        new DateTime($row['data'])
-
-                                );
-
-                                $investimentos[] = $investimento->to_array();
+                        if (!isset($dados['id'])) {
+                                throw new Exception("ID obrigatório para atualizar_investimento");
                         }
-
+                        $investimento = new Investimento(
+                                $dados['id'],
+                                $dados['nome'],
+                                $dados['tipo'],
+                                $dados['valor'],
+                                new DateTime($dados['data'])
+                        );
+                        return $this->service->atualizar_investimentoInvestimento($investimento);
+                } catch (Exception $e) {
                         return [
-                                "status" => 200,
-                                "investimentos" => $investimentos
-                        ];
-                } catch (PDOException $e) {
-                        return [
-                                "status" => 500,
-                                "erro" => "Erro ao listar investimentos: " . $e->getMessage()
+                                "status" => 400,
+                                "erro" => "Dados inválidos: " . $e->getMessage()
                         ];
                 }
+        }
+
+        public function deletar_investimento(int $id)
+        {
+                return $this->service->deletar_investimentoInvestimento($id);
+        }
+
+        public function listar_investimentos()
+        {
+                return $this->service->listarInvestimentos();
         }
 }

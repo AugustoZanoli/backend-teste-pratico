@@ -1,38 +1,73 @@
 <?php
 header('Content-Type: application/json');
 
-// Carregar o env para conexão do banco
 require_once __DIR__ . '/../utils/load_env.php';
 loadEnv(__DIR__ . '/../.env');
 
-// Conexão com o banco
 require_once __DIR__ . '/../src/connection.php';
-
-$db = new Connection();
-
-// Testando o controller
+require_once __DIR__ . '/../src/repository/investimento_repository.php';
+require_once __DIR__ . '/../src/services/investimento_service.php';
 require_once __DIR__ . '/../src/controllers/investimento_controller.php';
+require_once __DIR__ . '/../src/classes/investimento.php';
 
-spl_autoload_register(function ($class) {
-    $path = __DIR__ . '/../src/classes/' . strtolower($class) . '.php';
-    if (file_exists($path)) {
-        require_once $path;
-    }
-});
+// Instancia banco, repository, service e controller
+$db = new Connection();
+$repository = new InvestimentoRepository($db);
+$service = new InvestimentoService($repository);
+$controller = new InvestimentoController($service);
 
-$data_investimento = new DateTime('2025-06-14');
+$method = $_SERVER['REQUEST_METHOD'];
+$requestUri = $_SERVER['REQUEST_URI'];
+$path = parse_url($requestUri, PHP_URL_PATH);
 
-$investimento_1 = new Investimento(null, 'Bovespa', 'Acao', 100, $data_investimento);
+$basePath = '/backend/public';
+$route = substr($path, strlen($basePath));
 
-$controller = new Investimento_controller($db);
+switch ($route) {
+    case '/investimentos':
+        // Listar investimentos
+        if ($method === 'GET') {
+            $response = $controller->listar_investimentos();
+            echo json_encode($response);
+        }
 
-$response = $controller->inserir_investimento($investimento_1);
+        // Inserir novo investimento
+        elseif ($method === 'POST') {
+            $input = json_decode(file_get_contents('php://input'), true);
+            if ($input === null) {
+                http_response_code(400);
+                echo json_encode(['error' => 'Corpo inválido ou vazio']);
+                exit;
+            }
+            $response = $controller->criar_investimento($input);
+            echo json_encode($response);
+        }
 
-$investimento_2 = new Investimento(13, 'Bovespa 2', 'Titulo', 200.60, $data_investimento,);
-$response = $controller->update_investimento( $investimento_2 );
+        // Atualizar investimento
+        elseif ($method === 'PUT') {
+            $input = json_decode(file_get_contents('php://input'), true);
+            if ($input === null || !isset($input['id'])) {
+                http_response_code(400);
+                echo json_encode(['error' => 'Corpo inválido ou vazio']);
+                exit;
+            }
+            $response = $controller->atualizar_investimento($input);
+            echo json_encode($response);
+        }
 
-$response = $controller->listar_todos();
+        // Deletar um investimento
+        elseif ($method === 'DELETE') {
+            http_response_code(400);
+            echo json_encode(['error' => 'Corpo inválido ou vazio']);
+            exit;
+        } else {
+            http_response_code(405);
+            echo json_encode(['error' => 'Método não permitido']);
+        }
+        break;
 
-$response = $controller->delete_investimento($investimento_2);
-
-echo json_encode($response);
+    default:
+        http_response_code(404);
+        echo json_encode(['error' => 'Rota não encontrada']);
+        break;
+}
