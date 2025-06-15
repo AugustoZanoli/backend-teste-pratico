@@ -24,7 +24,7 @@ $basePath = '/backend/public';
 $route = substr($path, strlen($basePath));
 
 switch ($route) {
-    case '/investimentos':
+    case '/api/investimentos':
         // Listar investimentos
         if ($method === 'GET') {
             $response = $controller->listar_investimentos();
