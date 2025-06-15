@@ -1,6 +1,18 @@
 # Teste Prático: Controle de Investimentos (backend)
 
-## 🚀 Como rodar o projeto do zero
+## Tecnologias utilizadas
+
+---
+
+- PHP (8.4.8)
+- MySql (8.0.42)
+- PDO
+
+---
+
+## Como rodar o projeto do zero
+
+---
 
 ### 1. Clonar o repositório
 
@@ -54,6 +66,8 @@ CREATE TABLE investimento (
 php -S localhost:8080
 ```
 
+---
+
 ### Observações
 
 Caso o PHP esteja dando erro de drivers, pode ser necessário verificar se a instalação foi feita corretamente.
@@ -63,4 +77,4 @@ Caso o PHP esteja dando erro de drivers, pode ser necessário verificar se a ins
 php -m | findstr pdo
 ```
 
-Caso ele liste pdo_mysql e/ou pdo está tudo correto.
+Caso ele liste pdo_mysql está tudo correto.
