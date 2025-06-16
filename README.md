@@ -17,7 +17,7 @@
 ### Necessário
 - PHP instalado (https://www.php.net/downloads)
 - MySql instalado e rodando localmente (https://dev.mysql.com/downloads/)
-- PDO configurado (Configurando e ativando a extensão pdo_mysql)
+- PDO configurado (Consulte "Configurando e ativando a extensão pdo_mysql" ao final do documento)
 
 ### 1. Clonar o repositório
 
@@ -26,7 +26,28 @@ git clone https://github.com/AugustoZanoli/backend-teste-pratico.git
 cd backend-teste-pratico
 ```
 
-### 2. Configurar váriaveis de ambiente
+### 2. Verificar pré-requisitos do PHP
+
+Verifique a instalação do Php e da extensão pdo_mysql
+```bash
+php -v 
+```
+
+E
+
+```bash
+php -m | grep pdo
+```
+
+No Windows, substitua grep por findstr:
+
+```bash
+php -m | findstr pdo
+```
+
+Caso o pdo não tenha retorno, consulte o último tópico desse documento.
+
+### 3. Configurar váriaveis de ambiente
 
 Crie um arquivo .env na raiz do projeto com as seguintes variáveis:
 
@@ -39,7 +60,7 @@ DB_PASSWORD=sua_senha
 
 Utilize os dados necessários para realizar a conexão com o seu banco local.
 
-### 3. Criação do banco
+### 4. Criação do banco
 
 - Faça login no MySQL
 ```bash
@@ -63,7 +84,7 @@ CREATE TABLE investimento (
 );
 ```
 
-### 4. Rodar o servidor backend
+### 5. Rodar o servidor backend
 
 - O php já possui um servidor embutido. Para rodar basta executar:
 
