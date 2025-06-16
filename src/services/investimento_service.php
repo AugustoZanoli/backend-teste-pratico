@@ -9,7 +9,7 @@ class InvestimentoService
                 $this->repository = $repository;
         }
 
-        public function criarInvestimento(Investimento $investimento): array
+        public function criar_investimento(Investimento $investimento): array
         {
                 try {
                         $id = $this->repository->inserir_investimento($investimento);
@@ -28,7 +28,7 @@ class InvestimentoService
                 }
         }
 
-        public function atualizar_investimentoInvestimento(Investimento $investimento): array
+        public function atualizar_investimento(Investimento $investimento): array
         {
                 try {
                         $success = $this->repository->atualizar_investimento($investimento);
@@ -53,7 +53,7 @@ class InvestimentoService
                 }
         }
 
-        public function deletar_investimentoInvestimento(int $id): array
+        public function deletar_investimento(int $id): array
         {
                 try {
                         $success = $this->repository->deletar_investimento($id);
@@ -76,7 +76,7 @@ class InvestimentoService
                 }
         }
 
-        public function listarInvestimentos(): array
+        public function listar_investimentos(): array
         {
                 try {
                         $investimentos = $this->repository->listar_investimentos();

@@ -19,7 +19,7 @@ class InvestimentoController
                                 $dados['valor'],
                                 new DateTime($dados['data'])
                         );
-                        return $this->service->criarInvestimento($investimento);
+                        return $this->service->criar_investimento($investimento);
                 } catch (Exception $e) {
                         return [
                                 "status" => 400,
@@ -41,7 +41,7 @@ class InvestimentoController
                                 $dados['valor'],
                                 new DateTime($dados['data'])
                         );
-                        return $this->service->atualizar_investimentoInvestimento($investimento);
+                        return $this->service->atualizar_investimento($investimento);
                 } catch (Exception $e) {
                         return [
                                 "status" => 400,
@@ -52,11 +52,11 @@ class InvestimentoController
 
         public function deletar_investimento(int $id)
         {
-                return $this->service->deletar_investimentoInvestimento($id);
+                return $this->service->deletar_investimento($id);
         }
 
         public function listar_investimentos()
         {
-                return $this->service->listarInvestimentos();
+                return $this->service->listar_investimentos();
         }
 }
