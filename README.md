@@ -15,8 +15,9 @@
 ---
 
 ### Necessário
-- PHP instalado
-- MySql instalado e rodando localmente
+- PHP instalado (https://www.php.net/downloads)
+- MySql instalado e rodando localmente (https://dev.mysql.com/downloads/)
+- PDO configurado (Configurando e ativando a extensão pdo_mysql)
 
 ### 1. Clonar o repositório
 
@@ -72,13 +73,106 @@ php -S localhost:8080
 
 ---
 
-## Observações
+## Configurando e ativando a extensão pdo_mysql
 
-Caso o PHP esteja dando erro de drivers, pode ser necessário verificar se a instalação foi feita corretamente.
+Após instalar o PHP, pode ser necessário configurar algumas coisas manualmente, especialmente a extensão pdo_mysql usada para conexão com bancos MySQL via PDO.
 
-- Certifique-se que sua instalação do PHP tem a extensão pdo_mysql ativada.
+### 1. Verifique se o PHP está instalado corretamente
+
+No terminal, rode:
+
+```bash
+php -v
+```
+
+Se o PHP estiver instalado, ele mostrará a versão instalada.
+
+### 2. Verifique se a extensão pdo_mysql está ativada
+
+No terminal, execute:
+
+```bash
+php -m | grep pdo
+```
+
+No Windows, substitua grep por findstr:
+
+```powershell
+php -m | findstr pdo
+```
+Se aparecer pdo_mysql na lista, está tudo certo e você pode rodar seu backend normalmente.
+
+### 3. Caso a extensão pdo_mysql não esteja ativada
+
+Siga estes passos para ativá-la manualmente:
+
+- Acesse o diretório onde o PHP foi instalado
+
+Exemplo:
+
+```bash
+cd C:/php
+```
+
+- Verifique os arquivos de configuração
+
+Liste os arquivos:
+
+```bash
+ls
+```
+
+Provavelmente, você verá arquivos chamados php.ini-production e php.ini-development, mas não verá o php.ini.
+
+- Crie o arquivo de configuração
+
+Copie ou renomeie o arquivo php.ini-development para php.ini:
+
+No terminal:
+
+```bash
+copy php.ini-development php.ini
+```
+
+Ou faça manualmente no explorador de arquivos.
+
+- Edite o arquivo php.ini
+
+Abra o php.ini em um editor de texto e localize as seguintes linhas:
+
+```ini
+;extension_dir = "./"
+
+;extension=mysqli
+
+;extension=pdo_mysql
+```
+
+Remova o ponto-e-vírgula ; do início das linhas para ativá-las, e ajuste o caminho da extensão assim:
+
+```ini
+extension_dir = "ext"
+
+extension=mysqli
+
+extension=pdo_mysql
+```
+
+Salve o arquivo php.ini
+
+Reinicie seu servidor PHP (se estiver usando um servidor embutido ou serviço)
+
+Verifique novamente se a extensão está ativada
+
+Execute no terminal:
+
 ```bash
 php -m | findstr pdo
 ```
+Agora deve listar:
 
-Caso ele liste pdo_mysql está tudo correto.
+```nginx
+pdo_mysql
+```
+
+Se aparecer, significa que a extensão está funcionando.
