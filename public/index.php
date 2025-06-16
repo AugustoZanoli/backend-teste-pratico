@@ -66,13 +66,20 @@ switch ($route) {
 
         // Deletar um investimento
         elseif ($method === 'DELETE') {
-            http_response_code(400);
-            echo json_encode(['error' => 'Corpo inválido ou vazio']);
-            exit;
-        } else {
-            http_response_code(405);
-            echo json_encode(['error' => 'Método não permitido']);
+            parse_str($_SERVER['QUERY_STRING'], $query);
+
+            if (!isset($query['id'])) {
+                http_response_code(400);
+                echo json_encode(['error' => 'Parâmetro id é obrigatório']);
+                exit;
+            }
+
+            $id = intval($query['id']);
+
+            $response = $controller->deletar_investimento($id);
+            echo json_encode($response);
         }
+
         break;
 
     default:
