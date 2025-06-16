@@ -14,11 +14,15 @@
 
 ---
 
+### Necessário
+- PHP instalado
+- MySql instalado e rodando localmente
+
 ### 1. Clonar o repositório
 
 ```bash
-git clone <URL_DO_SEU_REPOSITORIO>
-cd <PASTA_DO_PROJETO>
+git clone https://github.com/AugustoZanoli/backend-teste-pratico.git
+cd backend-teste-pratico
 ```
 
 ### 2. Configurar váriaveis de ambiente
@@ -68,7 +72,7 @@ php -S localhost:8080
 
 ---
 
-### Observações
+## Observações
 
 Caso o PHP esteja dando erro de drivers, pode ser necessário verificar se a instalação foi feita corretamente.
 
