@@ -23,8 +23,16 @@
 
 ```bash
 git clone https://github.com/AugustoZanoli/backend-teste-pratico.git
-cd backend-teste-pratico
+ren backend-teste-pratico backend
+cd backend
 ```
+
+Caso esteja utilizando linux ou mac, substitua o comando ren por mv
+
+```bash
+mv backend-teste-pratico backend
+```
+
 
 ### 2. Verificar pré-requisitos do PHP
 
@@ -89,7 +97,7 @@ CREATE TABLE investimento (
 - O php já possui um servidor embutido. Para rodar basta executar:
 
 ```bash
-php -S localhost:8080
+php -S localhost:8000
 ```
 
 ---
