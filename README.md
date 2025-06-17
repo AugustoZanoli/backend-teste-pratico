@@ -97,7 +97,7 @@ CREATE TABLE investimento (
 - O php já possui um servidor embutido. Para rodar basta executar:
 
 ```bash
-php -S localhost:8000
+php -S localhost:8000 -t public
 ```
 
 ---
